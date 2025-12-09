@@ -1,116 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title><!-- PAGE TITLE HERE --></title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Low Cost Delivery System</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      .feature-icon {
+        font-size: 2rem;
+        color: #0d6efd;
+      }
+      body {
+        background: url("images/background.jpg") no-repeat center center fixed;
+        background-size: cover;
+      }
+      .hero {
+        background: linear-gradient(to right, #e3f2fd, #f8f9fa);
+        padding: 80px 0;
+      }
+      .section-title {
+        font-size: 2.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      .feature-card:hover {
+        transform: scale(1.03);
+        transition: 0.3s ease-in-out;
+        border: 1px solid #0d6efd;
+      }
+      .feature-icon {
+        font-size: 2.5rem;
+        color: #0d6efd;
+        transition: 0.3s ease-in-out;
+      }
+      .feature-icon:hover {
+        color: #6610f2;
+      }
+      .icon-circle {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.8rem;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: #dc3545;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+      .img-cover {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+      footer {
+        background-color: #0d6efd;
+        color: white;
+      }
+      .gallery-img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+      .navbar-nav .nav-link {
+        padding: 8px 15px;
+        border-radius: 8px;
+        transition: 0.3s ease-in-out;
+      }
 
-  <!-- Bootstrap CSS -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+      .navbar-nav .nav-link:hover {
+        background: #eb4d4b;
+        backdrop-filter: blur(4px);
+        color: #fff !important;
+      }
 
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .page-header {
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
-    }
-  </style>
-</head>
-<body>
+      .dropdown-menu .dropdown-item {
+        transition: 0.3s;
+        border-radius: 6px;
+      }
 
-  <!-- NAVBAR (সব পেজে একই থাকবে) -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">LowCostDelivery</a>
+      .dropdown-menu .dropdown-item:hover {
+        background: #eb4d4b;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
+          <img
+            src="images/logo.png"
+            alt="Logo"
+            width="40"
+            height="40"
+            class="me-2"
+          />
+          Low Cost Delivery System
+        </a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="income.html">Income With Us</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="customer-login.html">Customer</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="service.html">Service</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="admin-login.html">Admin</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="helpline.html">Helpline</a>
-          </li>
-        </ul>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav me-3">
+            <!-- Income With Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Income With
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Corporate</a></li>
+                <li><a class="dropdown-item" href="#">Student</a></li>
+                <li><a class="dropdown-item" href="#">Civil</a></li>
+              </ul>
+            </li>
+
+            <!-- Services Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Services
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Instant Delivery</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Inter / Outer City</a>
+                </li>
+                <li><a class="dropdown-item" href="#">Return / Exchange</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Local Area Delivery</a>
+                </li>
+                <li><a class="dropdown-item" href="#">Product Tracking</a></li>
+              </ul>
+            </li>
+
+            <!-- Helpline Dropdown -->
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Helpline
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Complain Box</a></li>
+                <li><a class="dropdown-item" href="#">Help Center</a></li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+  <a class="nav-link" href="admin/login.html">Admin</a>
+</li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-<!-- title: Home - LowCostDelivery -->
+    </nav>
 
-<main class="container my-4">
-  <div class="page-header text-center">
-    <h1>Low Cost Crowd Delivery System</h1>
-    <p class="lead">
-      Student, Office Employee এবং General people – সবাই মিলে কম খরচে পার্সেল ডেলিভারি।
-    </p>
+    <!-- Hero Section -->
+    <section class="position-relative overflow-hidden" style="height: 50vh">
+      <div
+        id="heroCarousel"
+        class="carousel slide carousel-fade position-absolute w-100 h-100"
+        data-bs-ride="carousel"
+        data-bs-interval="4000"
+      >
+        <div class="carousel-inner h-100">
+          <div class="carousel-item active h-100">
+            <img src="images/w1.png" class="d-block w-100 h-100 img-cover" />
+          </div>
+          <div class="carousel-item h-100">
+            <img src="images/w2.jpg" class="d-block w-100 h-100 img-cover" />
+          </div>
+          <div class="carousel-item h-100">
+            <img src="images/w3.png" class="d-block w-100 h-100 img-cover" />
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="container text-center text-white position-relative z-2"
+        style="top: 50%; transform: translateY(-50%)"
+      >
+        <h1 class="display-4 fw-bold">Welcome to Low Cost Delivery System</h1>
+        <p class="lead">
+          Your one-stop solution for fast, affordable, and reliable local
+          deliveries and earn money.
+        </p>
+      </div>
+      <div
+        class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"
+        style="z-index: 1"
+      ></div>
+    </section>
+
+    <!-- Login Cards -->
+<section class="bg-light py-5">
+  <div class="container text-center my-4">
+
+    <h5 style="font-size: 28px; font-weight: 600; color:#2c3e50; line-height: 1.5;">
+      Student, Office Employee এবং General People —  
+      <span style="color:#28a745;">সবাই মিলে কম খরচে পার্সেল ডেলিভারি।</span>
+    </h5>
+
+    <div class="row g-4 justify-content-center mt-4">
+
+      <!-- Customer Card -->
+      <div class="col-lg-5 col-md-6 col-sm-12">
+        <div class="card h-100 shadow-sm border-0 rounded-3 p-4"
+             style="transition: 0.3s; cursor:pointer; min-height: 420px;"
+             onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.15)';"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+
+          <img src="images/parcel_send.jpg"
+               alt="Corporate"
+               class="card-img-top mb-3 rounded"
+               style="height: 210px; object-fit: cover; width: 100%;" />
+
+          <h5 style="font-weight: 600; font-size: 22px;">Send Parcel (Customer)</h5>
+
+          <p style="font-size: 16px; margin-top: 8px; color:#555; text-align: center;">
+            A থেকে B তে পণ্য পাঠাতে চান?  
+            আমাদের কাস্টমার পোর্টাল থেকে সহজেই রিকোয়েস্ট করুন।
+          </p>
+
+          <a href="Customer/login.html" class="btn btn-success btn-sm mt-auto w-100 rounded-pill py-2">
+            Go to Customer
+          </a>
+        </div>
+      </div>
+
+      <!-- Partner Card -->
+      <div class="col-lg-5 col-md-6 col-sm-12">
+        <div class="card h-100 shadow-sm border-0 rounded-3 p-4"
+             style="transition: 0.3s; cursor:pointer; min-height: 420px;"
+             onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 10px 25px rgba(0,0,0,0.15)';"
+             onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+
+          <img src="images/earn_with_delivery.jpg"
+               alt="Student"
+               class="card-img-top mb-3 rounded"
+               style="height: 210px; object-fit: cover; width: 100%;" />
+
+          <h5 style="font-weight: 600; font-size: 22px;">Earn With Delivery</h5>
+
+          <p style="font-size: 16px; margin-top: 8px; color:#555; text-align: center;">
+            Student / Office Employee / সাধারণ মানুষ —  
+            যাতায়াতের পথে ডেলিভারি করে অতিরিক্ত ইনকাম করুন।
+          </p>
+
+          <a href="Incom_with_us.html" class="btn btn-success btn-sm mt-auto w-100 rounded-pill py-2">
+            Income With Us
+          </a>
+        </div>
+      </div>
+
+    </div>
   </div>
+</section>
 
-  <div class="row g-4">
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Send Parcel (Customer)</h5>
-          <p class="card-text">
-            A থেকে B তে পণ্য পাঠাতে চান? আমাদের কাস্টমার পোর্টাল থেকে রিকোয়েস্ট করুন।
-          </p>
-          <a href="customer-login.html" class="btn btn-primary">Go to Customer</a>
+
+
+    <!-- Features Section -->
+    <section class="py-5">
+      <div class="container">
+        <h2 class="section-title text-center">Our Key Features</h2>
+        <div class="row g-4 mt-4">
+          <!-- Feature 1: Income and Earn -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3"><i class="bi-bank2"></i></div>
+                <h5 class="card-title">Income</h5>
+                <p class="card-text text-muted">
+                  Earn money while providing delivery services.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 2: Instant Delivery -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3">
+                  <i class="bi bi-lightning-fill"></i>
+                </div>
+                <h5 class="card-title">Instant Delivery</h5>
+                <p class="card-text text-muted">
+                  Fast delivery service for urgent orders.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 3: Inter/Outer City -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3"><i class="bi bi-map"></i></div>
+                <h5 class="card-title">Inter/Outer City</h5>
+                <p class="card-text text-muted">
+                  Deliveries within city and outside city areas.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 4: Return/Exchange -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3">
+                  <i class="bi bi-arrow-left-right"></i>
+                </div>
+                <h5 class="card-title">Return/Exchange</h5>
+                <p class="card-text text-muted">
+                  Easy return and exchange of products.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 5: Local Area -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <h5 class="card-title">Local Area</h5>
+                <p class="card-text text-muted">
+                  Quick deliveries in nearby locations.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feature 6: Product Tracking -->
+          <div class="col-lg-3 col-md-6">
+            <div class="card text-center h-100 shadow-sm feature-card">
+              <div class="card-body">
+                <div class="feature-icon mb-3"><i class="bi bi-truck"></i></div>
+                <h5 class="card-title">Product Tracking</h5>
+                <p class="card-text text-muted">
+                  Real-time tracking of your deliveries.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Earn With Delivery</h5>
-          <p class="card-text">
-            Student / Office employee / General মানুষ – যাতায়াতের পথে ডেলিভারি করে ইনকাম।
-          </p>
-          <a href="income.html" class="btn btn-success">Income With Us</a>
+    <!-- About Section -->
+    <section class="bg-light py-5">
+      <div class="container my-5">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <img
+              src="images/about-us.avif"
+              alt="About PetCareAI"
+              class="img-fluid rounded shadow"
+            />
+          </div>
+          <div class="col-md-6">
+            <h2 class="section-title">About Our System</h2>
+            <p>
+              Our system is designed to provide fast, affordable, and reliable
+              delivery services for everyone. Whether you're sending packages
+              within your local area or outside the city, we ensure smooth and
+              safe delivery every time. Along with this, our platform also
+              creates earning opportunities for individuals who want to work as
+              delivery partners. Customers can enjoy instant delivery, easy
+              return/exchange options, and real-time product tracking—all in one
+              place. We aim to make delivery faster, smarter, and more
+              convenient for both customers and delivery partners.
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="col-md-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="card-title">Support & Help</h5>
-          <p class="card-text">
-            কোন সমস্যা? Complaint Box অথবা Help Centre থেকে আমাদের সাথে যোগাযোগ করুন।
-          </p>
-          <a href="helpline.html" class="btn btn-outline-secondary">Helpline</a>
+    <!-- Gallery -->
+    <section class="py-5">
+      <div class="container mt-4">
+        <h2 class="text-center mb-3">Our Gallery</h2>
+        <br />
+        <div class="row justify-content-center">
+          <div class="col-md-4 col-sm-6 mb-3 text-center">
+            <img src="images/instant.png" alt="G1" class="gallery-img" />
+          </div>
+          <div class="col-md-4 col-sm-6 mb-3 text-center">
+            <img
+              src="images/delivery-product-city.jpg"
+              alt="G2"
+              class="gallery-img"
+            />
+          </div>
+          <div class="col-md-4 col-sm-6 mb-3 text-center">
+            <img
+              src="images/product-location.jpg"
+              alt="G3"
+              class="gallery-img"
+            />
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</main>
+    </section>
 
-  <!-- এখানে প্রতিটা পেজের আলাদা কনটেন্ট থাকবে -->
-  <main class="container my-4">
-    <!-- PAGE CONTENT HERE -->
-  </main>
+    <!-- Complaint Box -->
+    <section
+      id="contact_us"
+      class="contact-us-single py-5"
+      style="background: #f9f9f9"
+    >
+      <div class="container-fluid p-0">
+        <form
+          style="
+            background: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            width: 100%;
+          "
+        >
+          <h5 class="mb-4 fw-bold">Complaint Box</h5>
+          <div class="row mb-3 align-items-center">
+            <label class="col-lg-2 col-md-3 col-sm-4 col-form-label"
+              >Enter Name :</label
+            >
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <input
+                type="text"
+                placeholder="Enter Name"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mb-3 align-items-center">
+            <label class="col-lg-2 col-md-3 col-sm-4 col-form-label"
+              >Email Address :</label
+            >
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <input
+                type="email"
+                placeholder="Enter Email Address"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mb-3 align-items-center">
+            <label class="col-lg-2 col-md-3 col-sm-4 col-form-label"
+              >Mobile Number:</label
+            >
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <input
+                type="tel"
+                placeholder="Enter Mobile Number"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row mb-4 align-items-start">
+            <label class="col-lg-2 col-md-3 col-sm-4 col-form-label"
+              >Complaint Details:</label
+            >
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <textarea
+                rows="5"
+                placeholder="Enter Your Message"
+                class="form-control"
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2 col-md-3 col-sm-4"></div>
+            <div class="col-lg-10 col-md-9 col-sm-8">
+              <button type="submit" class="btn btn-success">
+                Send Message
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Footer -->
+    <footer class="text-center py-4">
+      <div class="footer text-center">
+        <div class="container">
+          <h5>Contact Us</h5>
+          <p>
+            House 26, Road 02, Banani, Dhaka 1212, Bangladesh<br />
+            Phone: 8801712345678<br />
+            Email: support@lowcostdelivery.com<br />
+            Timing: 9 am To 8 Pm
+          </p>
+          <p class="mt-3">
+            Low Cost Delivery System - Smart Solutions for Fast & Affordable
+            Deliveries
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
