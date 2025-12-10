@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,60 +25,47 @@ public class HomeController {
      @Autowired
     private UserService userService;
 
-    // @GetMapping("/login")
-    // public String showLoginPage() {
-    //     return "login";  // login.html page
-    // }
+ @GetMapping("/register")
+    public String showRegisterPage(Model model) {
+        model.addAttribute("user", new User());
+        return "Earn_people/signup";  // signup.html (your frontend)
+    }
 
-    // @PostMapping("/loginsave")
-    // public String login(@RequestParam String email,
-    //                     @RequestParam String password,
-    //                     Model model) {
-
-    //     User user = userService.loginUser(email, password);
-
-    //     if (user != null) {
-    //         model.addAttribute("msg", "Login Successful!");
-    //         return "redirect:/dashboard"; // Change your page
-    //     } else {
-    //         model.addAttribute("error", "Invalid email or password");
-    //         return "login";
-    //     }
-    // }
-     @PostMapping("/login")
-    public String loginUser(
-            @RequestParam String email,
-            @RequestParam String password,
-            Model model) {
-
-        User user = userService.loginUser(email, password);
-
-        if (user != null) {
-            return "redirect:/dashboard";   // change your page
+    // HANDLE REGISTRATION
+    @PostMapping("/registers")
+    public String registerUser(@ModelAttribute("user") User user, Model model) {
+        try {
+            userService.registerUser(user);
+            model.addAttribute("success", "Registration successful. Please login.");
+            return "Earn_people/login";  // return login page
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "Earn_people/signup"; // reload signup with error
         }
-
-        model.addAttribute("error", "Invalid email or password");
-        return "login";
-    }
-  @GetMapping("/signup")
-    public String showSignupPage() {
-        return "signup";   // signup.html
     }
 
-    @PostMapping("/signupsave")
-    public String registerUser(
-            @RequestParam String username,
-            @RequestParam String email,
-            @RequestParam String phone,
-            @RequestParam String password,
-            @RequestParam String gender,
-            Model model) {
+    // SHOW LOGIN PAGE
+    @GetMapping("/login")
+    public String showLoginPage(Model model) {
+        return "Earn_people/login";  // login.html
+    }
 
-        User user = new User(username, email, phone, password, gender);
-        userService.registerUser(user);
+    // HANDLE LOGIN
+    @PostMapping("/login")
+    public String loginUser(@RequestParam String email,
+                            @RequestParam String password,
+                            Model model) {
 
-        model.addAttribute("success", "Registration Successful! Please login.");
-        return "login";   // redirect to login page
+        try {
+            User user = userService.login(email, password);
+            model.addAttribute("user", user);
+
+            // redirect to dashboard or home page
+            return "redirect:/";
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "Earn_people/login"; // reload page with error
+        }
     }
  
 }
