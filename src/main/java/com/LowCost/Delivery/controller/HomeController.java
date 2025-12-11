@@ -18,6 +18,7 @@ public class HomeController {
     public String viewHomePage() {
         return "index"; // correct
     }
+    
      @GetMapping("/incomewith")
     public String incomewith() {
         return "Incom_with_us"; // correct
