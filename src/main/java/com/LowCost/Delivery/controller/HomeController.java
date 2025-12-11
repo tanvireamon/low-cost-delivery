@@ -18,17 +18,19 @@ public class HomeController {
     public String viewHomePage() {
         return "index"; // correct
     }
-     @GetMapping("/incomewith")
+
+    @GetMapping("/incomewith")
     public String incomewith() {
         return "Incom_with_us"; // correct
     }
-     @Autowired
+      
+    @Autowired
     private UserService userService;
 
- @GetMapping("/register")
+    @GetMapping("/register")
     public String showRegisterPage(Model model) {
         model.addAttribute("user", new User());
-        return "Earn_people/signup";  // signup.html (your frontend)
+        return "Earn_people/signup"; // signup.html (your frontend)
     }
 
     // HANDLE REGISTRATION
@@ -37,7 +39,7 @@ public class HomeController {
         try {
             userService.registerUser(user);
             model.addAttribute("success", "Registration successful. Please login.");
-            return "Earn_people/login";  // return login page
+            return "Earn_people/login"; // return login page
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
             return "Earn_people/signup"; // reload signup with error
@@ -47,14 +49,14 @@ public class HomeController {
     // SHOW LOGIN PAGE
     @GetMapping("/login")
     public String showLoginPage(Model model) {
-        return "Earn_people/login";  // login.html
+        return "Earn_people/login"; // login.html
     }
 
     // HANDLE LOGIN
     @PostMapping("/login")
     public String loginUser(@RequestParam String email,
-                            @RequestParam String password,
-                            Model model) {
+            @RequestParam String password,
+            Model model) {
 
         try {
             User user = userService.login(email, password);
@@ -67,5 +69,5 @@ public class HomeController {
             return "Earn_people/login"; // reload page with error
         }
     }
- 
+
 }
