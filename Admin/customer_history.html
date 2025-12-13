@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Customer List</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+<div class="container my-4">
+
+<h4 class="fw-bold mb-3">All Customers</h4>
+
+<table class="table table-bordered table-hover shadow-sm">
+  <thead class="table-primary">
+    <tr>
+      <th>Customer ID</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Total Orders</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="customerTableBody">
+    <tr>
+    <td>C1023</td>
+    <td>Rahim Uddin</td>
+    <td>017XXXXXXXX</td>
+    <td>12</td>
+    <td><span class="badge bg-success">Active</span></td>
+    <td>
+      <a href="customer_details.html?id=C1023" class="btn btn-sm btn-primary">
+        View History
+      </a>
+    </td>
+  </tr>
+
+    <tr>
+      <td>C1024</td>
+      <td>Karim Ali</td>
+      <td>018XXXXXXXX</td>
+      <td>6</td>
+      <td><span class="badge bg-warning text-dark">Inactive</span></td>
+      <td>
+        <a href="customer_details.html?id=C1024" class="btn btn-sm btn-primary">
+          View History
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+<script>
+const customers = [];
+
+for (let i = 1; i <= 50; i++) {
+  customers.push({
+    id: "C" + (1000 + i),
+    name: "Customer " + i,
+    phone: "01XXXXXXXX",
+    orders: Math.floor(Math.random() * 20) + 1,
+    status: i % 3 === 0 ? "Inactive" : "Active"
+  });
+}
+
+const tbody = document.getElementById("customerTableBody");
+
+customers.forEach(c => {
+  const row = `
+    <tr>
+      <td>${c.id}</td>
+      <td>${c.name}</td>
+      <td>${c.phone}</td>
+      <td>${c.orders}</td>
+      <td>
+        <span class="badge ${c.status === 'Active' ? 'bg-success' : 'bg-warning text-dark'}">
+          ${c.status}
+        </span>
+      </td>
+      <td>
+        <a href="customer_details.html?id=${c.id}" class="btn btn-sm btn-primary">
+          View History
+        </a>
+      </td>
+    </tr>
+  `;
+  tbody.insertAdjacentHTML("beforeend", row);
+});
+</script>
+
+</body>
+</html>
