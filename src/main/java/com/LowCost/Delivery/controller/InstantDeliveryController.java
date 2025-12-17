@@ -1,120 +1,69 @@
 package com.LowCost.Delivery.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.LowCost.Delivery.model.InstantDeliveryOrder;
-import com.LowCost.Delivery.service.InstantDeliveryOrderService;
-import com.LowCost.Delivery.util.PdfGenerator;
+import com.LowCost.Delivery.model.InstantDelivery;
+import com.LowCost.Delivery.service.InstantDeliveryService;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class InstantDeliveryController {
 
-    private final InstantDeliveryOrderService orderService;
+    private final InstantDeliveryService service;
 
-    // Folder to store uploaded images (you can change path)
-    private static final String UPLOAD_DIR = "C:/Users/User/Downloads/img/";
-
-    // SHOW FORM
     @GetMapping("/instant-delivery")
-    public String showInstantDeliveryForm(Model model) {
-        return "Customer/Instant_Delivery_Form";
-        // -> templates/Customer/Instant_Delivery_Form.html
-    }
-// @GetMapping("/orderD")
-// public String oredrdetails() {
-//     return "order-details";
-// }
-@GetMapping("/orderD")
-public String oredrdetails(Model model) {
-    InstantDeliveryOrder order = orderService.getByOrderId("TEST-ID");
-    model.addAttribute("order", order);
-    return "order-details";
-}
-
-    // private static final String UPLOAD_DIR = "C:/Users/User/Downloads/img/";
-
-    @PostMapping("/instant")
-    public String submitInstantOrder(
-            @ModelAttribute InstantDeliveryOrder order,
-            @RequestParam(name = "parcelImage", required = false) MultipartFile parcelImage,
-            RedirectAttributes redirectAttributes) {
-
-        try {
-            if (parcelImage != null && !parcelImage.isEmpty()) {
-
-                String fileName = System.currentTimeMillis() + "_" + parcelImage.getOriginalFilename();
-
-                Path uploadPath = Paths.get(UPLOAD_DIR);
-
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                Files.copy(parcelImage.getInputStream(), uploadPath.resolve(fileName));
-                order.setImageFileName(fileName);
-            }
-        } catch (IOException e) {
-            redirectAttributes.addFlashAttribute("error", "Image upload failed!");
-            return "redirect:/Customer/instant-delivery";
-        }
-
-        if (order.getDeliveryCharge() == null) {
-            order.setDeliveryCharge(BigDecimal.valueOf(0));
-        }
-
-        InstantDeliveryOrder saved = orderService.createOrder(order);
-
-        redirectAttributes.addFlashAttribute("success",
-                "Order placed successfully! ID: " + saved.getOrderId());
-
-        return "redirect:/Customer/instant-delivery";
+    public String showForm() {
+        return "Instant_Delivery_Form";
     }
 
-    @GetMapping("/orderlist")
-    public String orderlist(Model model) {
+    @GetMapping("/orders-list")
+    public String orderslist() {
         return "orders-list";
-        // -> templates/Customer/Instant_Delivery_Form.html
     }
-
-    // VIEW SINGLE ORDER
-    @GetMapping("/orders/{orderId}")
-    public String viewOrder(@PathVariable String orderId, Model model) {
-        InstantDeliveryOrder order = orderService.getByOrderId(orderId);
-        model.addAttribute("order", order);
+@GetMapping("/order-details")
+    public String orderdetails() {
         return "order-details";
     }
+  @PostMapping(value = "/instant", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
+public String handleForm(
+        @ModelAttribute InstantDelivery delivery,
+        @RequestParam(value = "parcelImage", required = false) MultipartFile file,
+        Model model) throws IOException {
 
-    // DOWNLOAD PDF
-    @GetMapping("/orders/pdf/{orderId}")
-    public ResponseEntity<byte[]> downloadPdf(@PathVariable String orderId) throws Exception {
-        InstantDeliveryOrder order = orderService.getByOrderId(orderId);
+    if (file != null && !file.isEmpty()) {
 
-        byte[] pdfBytes = new PdfGenerator().generateOrderPdf(order);
+        // ✅ External directory (SAFE)
+        String uploadDir = "B:/Lowcostdelivery/uploads/";
+        File uploadPath = new File(uploadDir);
 
-        return ResponseEntity.ok()
-                .header("Content-Disposition", "attachment; filename=" + orderId + ".pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdfBytes);
+        if (!uploadPath.exists()) {
+            uploadPath.mkdirs();
+        }
+
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+        // ✅ Correct path joining
+        File dest = new File(uploadPath, fileName);
+        file.transferTo(dest);
+
+        // Save relative URL
+        delivery.setParcelImagePath("/uploads/" + fileName);
     }
 
-    // LIST ALL ORDERS
-    @GetMapping("/orders/all")
-    public String viewAllOrders(Model model) {
-        model.addAttribute("orders", orderService.getAllOrders());
-        return "orders-list";
-    }
+    delivery.setDeliveryCharge(150.0);
+    service.save(delivery);
+
+    model.addAttribute("successMessage", "Delivery request submitted successfully!");
+
+    return "redirect:/";
+}
+
 }

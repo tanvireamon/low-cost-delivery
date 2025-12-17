@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,69 +13,73 @@
         body {
             background-color: #eef2f7;
         }
+
         .table-container {
             background: #fff;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
         }
+
         h2 {
             color: #0d6efd;
             font-weight: 700;
         }
+
         .btn-primary {
             padding: 5px 12px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="container mt-5 mb-5">
-    <div class="table-container">
-        <h2 class="text-center mb-4">All Orders</h2>
+    <div class="container mt-5 mb-5">
+        <div class="table-container">
+            <h2 class="text-center mb-4">All Orders</h2>
 
-        <table class="table table-bordered table-striped table-hover align-middle">
-            <thead class="table-primary text-center">
-            <tr>
-                <th>#</th>
-                <th>Order ID</th>
-                <th>Sender</th>
-                <th>Receiver</th>
-                <th>Parcel Type</th>
-                <th>Charge</th>
-                <th>Date</th>
-                <th>Action</th>
-            </tr>
-            </thead>
+            <table class="table table-bordered table-striped table-hover align-middle">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Order ID</th>
+                        <th>Sender</th>
+                        <th>Receiver</th>
+                        <th>Parcel Type</th>
+                        <th>Charge</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-            <tr th:each="order, i : ${orders}">
-                <td th:text="${i.index + 1}"></td>
-                <td th:text="${order.orderId}"></td>
-                <td th:text="${order.senderName}"></td>
-                <td th:text="${order.receiverName}"></td>
-                <td th:text="${order.parcelType}"></td>
-                <td th:text="${order.deliveryCharge} + ' ৳'"></td>
-                <td th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                <tbody>
+                    <tr th:each="order, i : ${orders}">
+                        <td th:text="${i.index + 1}"></td>
+                        <td th:text="${order.orderId}"></td>
+                        <td th:text="${order.senderName}"></td>
+                        <td th:text="${order.receiverName}"></td>
+                        <td th:text="${order.parcelType}"></td>
+                        <td th:text="${order.deliveryCharge} + ' ৳'"></td>
+                        <td th:text="${#temporals.format(order.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
 
-                <td class="text-center">
-                    <a th:href="@{'/orders/' + ${order.orderId}}"
-                       class="btn btn-primary btn-sm">
-                        View Details
-                    </a>
-                </td>
-            </tr>
+                        <td class="text-center">
+                            <a th:href="@{'/orders/' + ${order.orderId}}" class="btn btn-primary btn-sm">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!-- <tr th:if="${orders.size() == 0}"> -->
+                        <td colspan="8" class="text-center text-muted">
+                            No orders found.
+                        </td>
+                    </tr>
 
-            <tr th:if="${orders.size() == 0}">
-                <td colspan="8" class="text-center text-muted">
-                    No orders found.
-                </td>
-            </tr>
-
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 </body>
+
 </html>
