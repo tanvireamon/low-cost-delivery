@@ -1,29 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inter / Outer City Delivery Form</title>
-  <!-- Bootstrap CSS -->
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
-    body {
-      background-color: #fdf6f0; /* Light cream background */
-    }
+    body { background-color: #fdf6f0; }
     .form-container {
       background-color: #ffffff;
       border-radius: 12px;
       padding: 30px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #198754; /* Green header */
-      font-weight: 700;
-    }
-    h4 {
-      color: #198754;
-      margin-top: 25px;
-    }
+    h2 { color: #198754; font-weight: 700; }
+    h4 { color: #198754; margin-top: 25px; }
     .form-control:focus {
       border-color: #198754;
       box-shadow: 0 0 5px rgba(25,135,84,0.3);
@@ -33,18 +26,12 @@
       border-color: #198754;
       transition: all 0.3s ease;
     }
-    .btn-success:hover {
-      background-color: #157347;
-      border-color: #157347;
-    }
-    label {
-      font-weight: 500;
-      color: #495057;
-    }
+    .btn-success:hover { background-color: #157347; border-color: #157347; }
+    label { font-weight: 500; color: #495057; }
   </style>
 </head>
+
 <body>
-  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
@@ -59,117 +46,131 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav me-3">
           <li class="nav-item">
-            <a class="nav-link" href="customer-dashboard.html">Home</a>
+            <a class="nav-link" href="/customerdashbore">Home</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Form Container -->
   <div class="container mt-5 mb-5">
     <div class="form-container mx-auto">
       <h2 class="text-center mb-4">Inter / Outer City Delivery Form</h2>
-      <form>
-        <!-- Sender Information -->
+
+      <!-- ✅ HTTP Session success message -->
+      <div th:if="${successMsg}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMsg}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <!-- ✅ Thymeleaf form binding -->
+      <form th:action="@{/inter-outer-delivery}" th:object="${deliveryRequest}" method="post">
+
         <h4>Sender Information</h4>
         <div class="mb-3">
-          <label for="senderName" class="form-label">Full Name</label>
-          <input type="text" class="form-control shadow-sm" id="senderName" placeholder="Enter sender's full name" required>
-        </div>
-        <div class="mb-3">
-          <label for="senderPhone" class="form-label">Phone Number</label>
-          <input type="tel" class="form-control shadow-sm" id="senderPhone" placeholder="Enter sender's phone number" required>
-        </div>
-        <div class="mb-3">
-          <label for="senderCity" class="form-label">City</label>
-          <input type="text" class="form-control shadow-sm" id="senderCity" placeholder="Enter sender's city" required>
-        </div>
-        <div class="mb-3">
-          <label for="pickupAddress" class="form-label">Pickup Address</label>
-          <textarea class="form-control shadow-sm" id="pickupAddress" rows="2" placeholder="Enter pickup address" required></textarea>
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control shadow-sm" th:field="*{senderName}" placeholder="Enter sender's full name" required>
         </div>
 
-        <!-- Receiver Information -->
+        <div class="mb-3">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-control shadow-sm" th:field="*{senderPhone}" placeholder="Enter sender's phone number" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">City</label>
+          <input type="text" class="form-control shadow-sm" th:field="*{senderCity}" placeholder="Enter sender's city" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Pickup Address</label>
+          <textarea class="form-control shadow-sm" th:field="*{pickupAddress}" rows="2" placeholder="Enter pickup address" required></textarea>
+        </div>
+
         <h4 class="mt-4">Receiver Information</h4>
         <div class="mb-3">
-          <label for="receiverName" class="form-label">Full Name</label>
-          <input type="text" class="form-control shadow-sm" id="receiverName" placeholder="Enter receiver's full name" required>
-        </div>
-        <div class="mb-3">
-          <label for="receiverPhone" class="form-label">Phone Number</label>
-          <input type="tel" class="form-control shadow-sm" id="receiverPhone" placeholder="Enter receiver's phone number" required>
-        </div>
-        <div class="mb-3">
-          <label for="receiverCity" class="form-label">City</label>
-          <input type="text" class="form-control shadow-sm" id="receiverCity" placeholder="Enter receiver's city" required>
-        </div>
-        <div class="mb-3">
-          <label for="deliveryAddress" class="form-label">Delivery Address</label>
-          <textarea class="form-control shadow-sm" id="deliveryAddress" rows="2" placeholder="Enter delivery address" required></textarea>
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control shadow-sm" th:field="*{receiverName}" placeholder="Enter receiver's full name" required>
         </div>
 
-        <!-- Parcel Information -->
-        <h4 class="mt-4">Parcel Information</h4>
         <div class="mb-3">
-          <label for="parcelCategory" class="form-label">Parcel Category</label>
-          <select class="form-select shadow-sm" id="parcelCategory" required>
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-control shadow-sm" th:field="*{receiverPhone}" placeholder="Enter receiver's phone number" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">City</label>
+          <input type="text" class="form-control shadow-sm" th:field="*{receiverCity}" placeholder="Enter receiver's city" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Delivery Address</label>
+          <textarea class="form-control shadow-sm" th:field="*{deliveryAddress}" rows="2" placeholder="Enter delivery address" required></textarea>
+        </div>
+
+        <h4 class="mt-4">Parcel Information</h4>        
+        <div class="mb-3">
+          <label class="form-label">Parcel Category</label>
+              <select class="form-select shadow-sm" th:field="*{parcelCategory}" required>
             <option value="">Select category</option>
-            <option>Document</option>
-            <option>Fragile Item</option>
-            <option>Clothes</option>
-            <option>Gadget</option>
-            <option>Package</option>
+            <option value="Document">Document</option>
+            <option value="Fragile Item">Fragile Item</option>
+            <option value="Clothes">Clothes</option>
+            <option value="Gadget">Gadget</option>
+            <option value="Package">Package</option>
           </select>
-        </div>
-        <div class="mb-3">
-          <label for="parcelWeight" class="form-label">Weight</label>
-          <select class="form-select shadow-sm" id="parcelWeight" required>
-            <option value="">Select weight</option>
-            <option>1kg</option>
-            <option>2kg</option>
-            <option>5kg</option>
-            <option>10kg</option>
-            <option>20kg</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="deliveryType" class="form-label">Delivery Type</label>
-          <select class="form-select shadow-sm" id="deliveryType" required>
-            <option value="">Select type</option>
-            <option>Regular</option>
-            <option>Express</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="expectedDate" class="form-label">Expected Delivery Date</label>
-          <input type="date" class="form-control shadow-sm" id="expectedDate" readonly>
         </div>
 
-        <!-- COD Section -->
+        <div class="mb-3">
+          <label class="form-label">Weight</label>
+          <select class="form-select shadow-sm" th:field="*{parcelWeight}" required>
+            <option value="">Select weight</option>
+            <option value="1kg">1kg</option>
+            <option value="2kg">2kg</option>
+            <option value="5kg">5kg</option>
+            <option value="10kg">10kg</option>
+            <option value="20kg">20kg</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Delivery Type</label>
+          <select class="form-select shadow-sm" th:field="*{deliveryType}" id="deliveryType" required>
+            <option value="">Select type</option>
+            <option value="Regular">Regular</option>
+            <option value="Express">Express</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Expected Delivery Date</label>
+          <input type="date" class="form-control shadow-sm" th:field="*{expectedDate}" id="expectedDate" readonly>
+        </div>
+
         <h4 class="mt-4">Cash on Delivery (COD)</h4>
         <div class="mb-3">
           <label class="form-label">COD Option</label>
-          <select class="form-select shadow-sm" id="codOption" required>
+          <select class="form-select shadow-sm" th:field="*{codOption}" id="codOption" required>
             <option value="">Select option</option>
-            <option>Yes</option>
-            <option>No</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="codAmount" class="form-label">COD Amount (৳)</label>
-          <input type="number" class="form-control shadow-sm" id="codAmount" placeholder="Enter amount">
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Returns Option</label>
-          <select class="form-select shadow-sm" id="returnOption" required>
-            <option value="">Select option</option>
-            <option>Yes</option>
-            <option>No</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
           </select>
         </div>
 
-        <!-- Submit Button -->
+        <div class="mb-3">
+          <label class="form-label">COD Amount (৳)</label>
+          <input type="number" class="form-control shadow-sm" th:field="*{codAmount}" id="codAmount" placeholder="Enter amount">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Returns Option</label>
+          <select class="form-select shadow-sm" th:field="*{returnOption}" required>
+            <option value="">Select option</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
         <div class="text-center mt-4">
           <button type="submit" class="btn btn-success btn-lg">Submit Delivery Request</button>
         </div>
@@ -177,7 +178,38 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Optional: UI তে expectedDate auto-fill (server-side তাও করবে) -->
+  <script>
+    const typeEl = document.getElementById("deliveryType");
+    const dateEl = document.getElementById("expectedDate");
+    const codOpt = document.getElementById("codOption");
+    const codAmt = document.getElementById("codAmount");
+
+    function formatDate(d){
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      return d.getFullYear() + '-' + m + '-' + day;
+    }
+
+    typeEl?.addEventListener("change", () => {
+      const today = new Date();
+      if (typeEl.value === "Express") today.setDate(today.getDate()+1);
+      else if (typeEl.value === "Regular") today.setDate(today.getDate()+3);
+      else return;
+
+      dateEl.value = formatDate(today);
+    });
+
+    codOpt?.addEventListener("change", () => {
+      if (codOpt.value === "No") {
+        codAmt.value = "";
+        codAmt.setAttribute("disabled", "disabled");
+      } else {
+        codAmt.removeAttribute("disabled");
+      }
+    });
+  </script>
 </body>
 </html>
