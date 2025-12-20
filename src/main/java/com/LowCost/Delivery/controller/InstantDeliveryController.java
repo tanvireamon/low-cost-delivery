@@ -78,10 +78,10 @@ public class InstantDeliveryController {
     //     return "Inter_Outer_City_Delivery";
     // }
 
-    @GetMapping("/localareadelivery")
-    public String loalareadeliveryString() {
-        return "Local_Area_Delivery";
-    }
+    // @GetMapping("/localareadelivery")
+    // public String loalareadeliveryString() {
+    //     return "Local_Area_Delivery";
+    // }
 
     @GetMapping("/track")
     public String trackString() {
