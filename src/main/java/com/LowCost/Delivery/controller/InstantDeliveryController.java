@@ -73,10 +73,10 @@ public class InstantDeliveryController {
         return "redirect:/";
     }
 
-    @GetMapping("/interncitydelivery")
-    public String intercityString() {
-        return "Inter_Outer_City_Delivery";
-    }
+    // @GetMapping("/interncitydelivery")
+    // public String intercityString() {
+    //     return "Inter_Outer_City_Delivery";
+    // }
 
     @GetMapping("/localareadelivery")
     public String loalareadeliveryString() {
