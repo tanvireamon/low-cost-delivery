@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+ import jakarta.servlet.http.HttpSession;
 import com.LowCost.Delivery.model.User;
 import com.LowCost.Delivery.service.UserService;
 
@@ -53,21 +53,30 @@ public class HomeController {
     }
 
     // HANDLE LOGIN
-    @PostMapping("/login")
-    public String loginUser(@RequestParam String email,
-            @RequestParam String password,
-            Model model) {
+ 
 
-        try {
-            User user = userService.login(email, password);
-            model.addAttribute("user", user);
+@PostMapping("/login")
+public String loginUser(@RequestParam String email,
+                        @RequestParam String password,
+                        Model model,
+                        HttpSession session) {
 
-            // redirect to dashboard or home page
-            return "redirect:/";
-        } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "Earn_people/login"; // reload page with error
-        }
+    try {
+        User user = userService.login(email, password);
+
+        // session এ save করুন
+        session.setAttribute("loggedUser", user);
+        // বা শুধু username রাখতে চাইলে:
+        // session.setAttribute("username", user.getUsername());
+
+        return "redirect:/customerdashbore";
+    } catch (RuntimeException e) {
+        model.addAttribute("error", e.getMessage());
+        return "Earn_people/login";
     }
+}
+
+   
+    
 
 }
