@@ -11,10 +11,17 @@ import lombok.*;
 @Builder
 public class InstantDelivery {
 
-    @Id
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // private Long id;
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "order_id")
+    private Long orderId;
+    
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @Column(name = "id")   // ✅ DB তে যেটা আছে সেটাই
+    // private Long id;
     // Sender
     private String senderName;
     private String senderPhone;
@@ -43,4 +50,5 @@ public class InstantDelivery {
     private String parcelImagePath;
 
     private Double deliveryCharge;
+
 }

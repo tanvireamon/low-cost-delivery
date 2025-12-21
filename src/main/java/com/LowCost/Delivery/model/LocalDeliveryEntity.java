@@ -18,7 +18,15 @@ public class LocalDeliveryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+      // ✅ Foreign Key column: order_id
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+        name = "order_id",
+        referencedColumnName = "order_id",
+        nullable = false,
+        unique = true
+    )
+    private InstantDelivery order;
     // Sender
     @Column(nullable = false)
     private String senderName;

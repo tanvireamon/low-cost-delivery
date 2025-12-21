@@ -5,16 +5,20 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import com.LowCost.Delivery.model.InstantDelivery;
 import com.LowCost.Delivery.model.interoutercityentity;
 import com.LowCost.Delivery.repository.interouterrepo;
+import com.LowCost.Delivery.repository.InstantDeliveryRepository;
 import com.LowCost.Delivery.service.interouterservice;
 @Service
 public class interouterImpl implements interouterservice {
     
     private final interouterrepo repository;
+    private final InstantDeliveryRepository instantDeliveryRepository;
 
-    public interouterImpl(interouterrepo repository) {
+    public interouterImpl(interouterrepo repository, InstantDeliveryRepository instantDeliveryRepository) {
         this.repository = repository;
+        this.instantDeliveryRepository = instantDeliveryRepository;
     }
 
     public interoutercityentity create(interoutercityentity request) {
@@ -33,6 +37,14 @@ public class interouterImpl implements interouterservice {
             request.setCodAmount(null);
         }
 
-        return repository.save(request);
+       // return repository.save(request);
+       
+    InstantDelivery order = InstantDelivery.builder().build();
+    order = instantDeliveryRepository.save(order);
+
+    request.setOrder(order);
+    request.setCreatedAt(LocalDateTime.now());
+
+    return repository.save(request);
     }
 }
