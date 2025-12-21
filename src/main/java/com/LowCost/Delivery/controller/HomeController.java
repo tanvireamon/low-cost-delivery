@@ -72,7 +72,7 @@ public String loginUser(@RequestParam String email,
         return "redirect:/customerdashbore";
     } catch (RuntimeException e) {
         model.addAttribute("error", e.getMessage());
-        return "Earn_people/login";
+        return "redirect:/register";
     }
 }
 
