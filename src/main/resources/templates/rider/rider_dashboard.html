@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rider Dashboard</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <style>
+    body { background: #f6f8fb; }
+    .card-soft { border: 0; border-radius: 14px; box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+    .badge-soft { background: #e7f1ff; color: #0d6efd; }
+    .table-card tbody tr { background:#fff; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:.2s; }
+    .table-card tbody tr td { border: none; padding: 16px; vertical-align: middle; }
+    .table-card tbody { border-collapse: separate; border-spacing: 0 12px; }
+    .table-card tbody tr:hover { transform: translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,0.10); }
+    .small-muted { color:#6c757d; font-size: .92rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" th:href="@{/rider/dashboard}">🚴 Rider Panel</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="nav">
+      <ul class="navbar-nav me-3">
+        <li class="nav-item"><a class="nav-link" th:href="@{/rider/dashboard}">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/rider/assigned}">My Orders</a></li>
+      </ul>
+
+      <form th:action="@{/logout}" method="post" class="d-flex">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button class="btn btn-light btn-sm">Logout</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <!-- Top summary -->
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="card card-soft p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="small-muted">Available Orders</div>
+            <div class="fs-4 fw-bold" th:text="${stats != null ? stats.availableCount : 0}">0</div>
+          </div>
+          <span class="badge badge-soft px-3 py-2">Live</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-soft p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="small-muted">Assigned to Me</div>
+            <div class="fs-4 fw-bold" th:text="${stats != null ? stats.assignedCount : 0}">0</div>
+          </div>
+          <span class="badge text-bg-warning px-3 py-2">Working</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-soft p-3">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="small-muted">Today Earnings</div>
+            <div class="fs-4 fw-bold" th:text="${stats != null ? '৳' + stats.todayEarning : '৳0'}">৳0</div>
+          </div>
+          <span class="badge text-bg-success px-3 py-2">Cash</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div th:if="${successMsg}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${successMsg}">Success</span>
+    <button class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${errorMsg}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${errorMsg}">Error</span>
+    <button class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <!-- Search bar -->
+  <div class="card card-soft mb-3">
+    <div class="card-body d-flex flex-wrap gap-2 align-items-center justify-content-between">
+      <div>
+        <h5 class="mb-0">📦 Available Orders</h5>
+        <div class="small-muted">Accept an order to start delivery</div>
+      </div>
+      <div class="d-flex gap-2">
+        <input id="searchBox" class="form-control form-control-sm" style="min-width:260px" placeholder="Search by order id / pickup / drop">
+        <select id="typeFilter" class="form-select form-select-sm" style="min-width:180px">
+          <option value="">All Types</option>
+          <option value="INSTANT">INSTANT</option>
+          <option value="LOCAL">LOCAL</option>
+          <option value="INTER_OUTER">INTER_OUTER</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orders table -->
+  <div class="card card-soft">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-card align-middle" id="ordersTable">
+          <thead class="table-light">
+          <tr>
+            <th>Order ID</th>
+            <th>Pickup</th>
+            <th>Drop</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Earning</th>
+            <th class="text-center">Action</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr th:if="${orders == null || #lists.isEmpty(orders)}">
+            <td colspan="7" class="text-center py-4">No available orders found.</td>
+          </tr>
+
+          <tr th:each="o : ${orders}"
+              th:attr="data-type=${o.sourceType}">
+            <td class="fw-bold" th:text="${o.orderId}">#1021</td>
+            <td th:text="${o.pickup}">Dhanmondi</td>
+            <td th:text="${o.drop}">Mirpur</td>
+            <td><span class="badge text-bg-info" th:text="${o.sourceType}">INSTANT</span></td>
+            <td th:text="${o.date}">12/12/2025</td>
+            <td><span class="badge badge-soft" th:text="${'৳' + o.earning}">৳120</span></td>
+
+            <td class="text-center">
+              <form th:action="@{'/rider/orders/' + ${o.sourceType} + '/' + ${o.sourcePk} + '/accept'}"
+                    method="post" style="display:inline;">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button class="btn btn-sm btn-success">Accept</button>
+              </form>
+
+              <form th:action="@{'/rider/orders/' + ${o.sourceType} + '/' + ${o.sourcePk} + '/reject'}"
+                    method="post" style="display:inline;">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button class="btn btn-sm btn-outline-danger">Reject</button>
+              </form>
+
+              <button class="btn btn-sm btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailsModal"
+                      th:attr="data-order=${o.orderId},data-pickup=${o.pickup},data-drop=${o.drop},data-type=${o.sourceType},data-earning=${o.earning}">
+                Details
+              </button>
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius:14px;">
+      <div class="modal-header">
+        <h5 class="modal-title">Order Details</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-2"><b>Order:</b> <span id="mOrder">-</span></div>
+        <div class="mb-2"><b>Type:</b> <span id="mType">-</span></div>
+        <div class="mb-2"><b>Pickup:</b> <span id="mPickup">-</span></div>
+        <div class="mb-2"><b>Drop:</b> <span id="mDrop">-</span></div>
+        <div class="mb-2"><b>Earning:</b> ৳<span id="mEarning">0</span></div>
+
+        <div class="small-muted mt-3">
+          (Optional) Map preview/route can be added here using Google Maps API.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Simple search + filter
+  const searchBox = document.getElementById('searchBox');
+  const typeFilter = document.getElementById('typeFilter');
+  const table = document.getElementById('ordersTable');
+  const rows = () => Array.from(table.querySelectorAll('tbody tr')).filter(r => r.querySelector('td'));
+
+  function applyFilters() {
+    const q = (searchBox.value || '').toLowerCase();
+    const t = typeFilter.value;
+
+    rows().forEach(r => {
+      const text = r.innerText.toLowerCase();
+      const rowType = r.getAttribute('data-type') || '';
+      const okQ = !q || text.includes(q);
+      const okT = !t || rowType === t;
+      r.style.display = (okQ && okT) ? '' : 'none';
+    });
+  }
+
+  searchBox?.addEventListener('input', applyFilters);
+  typeFilter?.addEventListener('change', applyFilters);
+
+  // Modal data binding
+  const detailsModal = document.getElementById('detailsModal');
+  detailsModal?.addEventListener('show.bs.modal', (event) => {
+    const btn = event.relatedTarget;
+    document.getElementById('mOrder').textContent = btn.getAttribute('data-order') || '-';
+    document.getElementById('mType').textContent = btn.getAttribute('data-type') || '-';
+    document.getElementById('mPickup').textContent = btn.getAttribute('data-pickup') || '-';
+    document.getElementById('mDrop').textContent = btn.getAttribute('data-drop') || '-';
+    document.getElementById('mEarning').textContent = btn.getAttribute('data-earning') || '0';
+  });
+</script>
+
+</body>
+</html>
