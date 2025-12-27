@@ -1,34 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Customer Details</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Customer Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-light">
 <div class="container my-4">
 
-<!-- CUSTOMER INFO -->
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h5 class="fw-bold">Customer Information</h5>
+  <!-- CUSTOMER INFO -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="fw-bold">Customer Information</h5>
 
-    <p><b>Customer ID:</b> <span id="customerId"></span></p>
-    <p><b>Name:</b> Rahim Uddin</p>
-    <p><b>Phone:</b> 017XXXXXXXX</p>
-    <p><b>Status:</b> <span class="badge bg-success">Active</span></p>
+      <p><b>Customer ID:</b> <span th:text="${c.customerId}">1</span></p>
+      <p><b>Name:</b> <span th:text="${c.name}">Rahim Uddin</span></p>
+      <p><b>Phone:</b> <span th:text="${c.phone}">017XXXXXXXX</span></p>
 
+      <p>
+        <b>Status:</b>
+        <span class="badge"
+              th:classappend="${c.status=='Active'} ? 'bg-success' : 'bg-danger'"
+              th:text="${c.status}">
+          Active
+        </span>
+      </p>
+    </div>
   </div>
-</div>
 
+  <!-- ORDER HISTORY -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="fw-bold">Order History</h5>
 
-<!-- ORDER HISTORY -->
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h5 class="fw-bold">Order History</h5>
-    <table class="table table-bordered">
-      <thead class="table-secondary">
+      <table class="table table-bordered">
+        <thead class="table-secondary">
         <tr>
           <th>Order ID</th>
           <th>Date</th>
@@ -36,60 +43,80 @@
           <th>Status</th>
           <th>Amount</th>
         </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>ORD101</td>
-          <td>12-09-2025</td>
-          <td>Instant</td>
-          <td><span class="badge bg-success">Delivered</span></td>
-          <td>৳120</td>
+        </thead>
+
+        <tbody>
+        <tr th:if="${c.orders == null || #lists.isEmpty(c.orders)}">
+          <td colspan="5" class="text-center">No orders found.</td>
         </tr>
-        <tr>
-          <td>ORD102</td>
-          <td>15-09-2025</td>
-          <td>Inter City</td>
-          <td><span class="badge bg-warning text-dark">Pending</span></td>
-          <td>৳200</td>
+
+        <tr th:each="o : ${c.orders}">
+          <td th:text="${o.orderId}">ORD101</td>
+          <td th:text="${o.date}">12-09-2025</td>
+          <td th:text="${o.deliveryType}">Instant</td>
+          <td>
+            <span class="badge"
+                  th:classappend="${o.status=='Delivered'} ? 'bg-success' : 'bg-warning text-dark'"
+                  th:text="${o.status}">Pending</span>
+          </td>
+          <td th:text="${'৳' + o.amount}">৳120</td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
-<!-- RETURN HISTORY -->
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h5 class="fw-bold">Return & Exchange</h5>
-    <table class="table table-bordered">
-      <tr>
-        <th>Order</th>
-        <th>Reason</th>
-        <th>Status</th>
-      </tr>
-      <tr>
-        <td>ORD102</td>
-        <td>Damaged</td>
-        <td><span class="badge bg-success">Approved</span></td>
-      </tr>
-    </table>
+  <!-- RETURN HISTORY -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="fw-bold">Return & Exchange</h5>
+
+      <table class="table table-bordered">
+        <thead class="table-secondary">
+        <tr>
+          <th>Order</th>
+          <th>Reason</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${c.returns == null || #lists.isEmpty(c.returns)}">
+          <td colspan="3" class="text-center">No return/exchange found.</td>
+        </tr>
+
+        <tr th:each="r : ${c.returns}">
+          <td th:text="${r.orderId}">ORD102</td>
+          <td th:text="${r.reason}">Damaged</td>
+          <td>
+            <span class="badge bg-success" th:text="${r.status}">Approved</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
   </div>
-</div>
 
-<!-- COMPLAINT -->
-<div class="card mb-4 shadow-sm">
-  <div class="card-body">
-    <h5 class="fw-bold">Complaints</h5>
-    <ul class="list-group">
-      <li class="list-group-item">Late delivery – Resolved</li>
-    </ul>
+  <!-- COMPLAINT -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h5 class="fw-bold">Complaints</h5>
+
+      <ul class="list-group">
+        <li class="list-group-item"
+            th:if="${c.complaints == null || #lists.isEmpty(c.complaints)}">
+          No complaints found.
+        </li>
+
+        <li class="list-group-item" th:each="x : ${c.complaints}"
+            th:text="${x.message}">
+          Late delivery – Resolved
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 
 </div>
-<script>
-  const id = new URLSearchParams(window.location.search).get("id");
-  document.getElementById("customerId").innerText = id;
-</script>
 </body>
 </html>
